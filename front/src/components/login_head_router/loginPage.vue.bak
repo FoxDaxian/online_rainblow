@@ -301,13 +301,6 @@
 			};
 		},
 		methods:{
-			enter_todo(e){
-				let ev = e || window.event;
-				if( ev.keyCode === 13 ){
-					this.onoff && this.loginFn();
-					this.onoff ||this.registerFn();
-				}
-			},
 			change_onoff(){
 				this.onoff = !this.onoff;
 			},
@@ -323,40 +316,19 @@
 					emulateJSON: true
 				}).then( (data) => {
 					if( data.data.res === 1 ){
-						if( this.back_path !== undefined ){
-							//记录的用户在未登录状态下访问的页面
-							this.$router.push(this.back_path);
-						}else{
-							this.$router.push("/");
-						}
+						location.href = "http://rbblog.space/";
 					}
 					if( data.data.res === 4 ){
-						this.$msg({
-							type:"error",
-							showClose: true,
-							message: '账号都能忘？'
-						});
+						alert('账号错误');
 					}
 					if( data.data.res === 2 ){
-						this.$msg({
-							type:"error",
-							showClose: true,
-							message: '厉害，密码忘了？'
-						});
+						alert('密码错误');
 					}
 					if( data.data.res === 3 ){
-						this.$msg({
-							type:"error",
-							showClose: true,
-							message: '没激活啊，老哥'
-						});
+						alert('该账号未激活');
 					}
 				},(data) => {
-					this.$msg({
-						type:"error",
-						showClose: true,
-						message: '数据库爆炸'
-					});
+					alert('登录失败');
 				});
 			},
 			registerFn(){
@@ -373,53 +345,27 @@
 						emulateJSON: true
 					}).then( (data) => {
 						if(  data.data.res === 1  ){
-							//发送成功
-							this.$msg({
-								type:"success",
-								showClose: true,
-								message: '呼...好累'
-							});
+							alert('邮件发送成功，请验证您的账户');
 						}
 						if( data.data.res === 3 ){
-							this.$msg({
-								type:"error",
-								showClose: true,
-								message: '账号被喵占了'
-							});
+							alert('账号已存在');
 						}
 						if( data.data.res === 4 ){
-							this.$msg({
-								type:"error",
-								showClose: true,
-								message: '重起个独一无二的名字吧'
-							});
+							alert('用户名已存在');
 						}
 						if( data.data.res === 5 ){
-							this.$msg({
-								type:"error",
-								showClose: true,
-								message: '邮箱被别人抢先注册了，好气啊'
-							});
+							alert('您填写的邮箱已经注册过了');
 						}
 					},(data) => {
-						this.$msg({
-							type:"error",
-							showClose: true,
-							message: '数据库爆炸'
-						});
+						console.log(data);
+						alert('注册失败');
 					});
 				}
 
 				//这里是前台验证
 				let showerror = () => {
-					this.$msg({
-						type:"error",
-						showClose: true,
-						message: '检查你的注册信息'
-					});
+					alert('信息填写有误，请确认');
 				}
-
-
 				(this.regis_un_class === "success") &&
 				(this.regis_acc_class === "success") &&
 				(this.regis_pw_class === "success") &&
@@ -434,22 +380,8 @@
 				showerror();
 			},
 			backHome(){
-				//vue-reouter的编程式路由，还是蛮好用的，其实就是利用的JS的history，稳稳当当弄完了自己的东西，开始干
+				//vue-reouter的编程式路由，还是蛮好用的，七十就是利用的JS的history，稳稳当当弄完了自己的东西，开始干
 				this.$router.push("/");
-			},
-			rm_event(el, event, fn) {
-				if ( window.removeEventListener ) {   
-					el.removeEventListener(event, fn);   
-				}else{   
-					el.detachEvent("on" + event, fn);   
-				}   
-			},
-			add_event(el, event, fn){
-				if ( window.attachEvent ){
-					el.attachEvent("on" + event, fn);
-				}else{
-					el.addEventListener(event, fn);
-				}
 			}
 		},
 		watch:{
@@ -458,9 +390,6 @@
 			}
 		},
 		computed:{
-			back_path(){
-				return this.$router.currentRoute.query.back;
-			},
 			regis_un_class(){
 				if( this.ref3_onoff ){
 					if( this.regis_un.replace(/(^\s*)|(\s*$)/g, "").length >= 2 && this.regis_un.replace(/(^\s*)|(\s*$)/g, "").length <= 10 ){
@@ -505,14 +434,9 @@
 						return "danger";
 					}
 				}
-			},
-		},
-		beforeDestroy(){
-			this.rm_event(window,"keyup",this.enter_todo);
+			}
 		},
 		mounted(){
-			this.add_event(window,"keyup",this.enter_todo);
-
 			this.$refs.ref1.focus();
 			for( let item in this.$refs ){
 				this.changebg_arr.forEach((el,i) => {
@@ -536,7 +460,7 @@
 					}
 				}
 			}
-
+			
 		},
 	};
 </script>

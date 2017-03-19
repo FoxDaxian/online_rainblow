@@ -1,6 +1,11 @@
 import Vue from 'vue';
 import App from './App';
 
+
+
+import store from './vuex/main_vuex.js';
+
+
 //使用vue-router
 import router_config from "./router/main_router.js";
 import VueRouter from 'vue-router';
@@ -9,23 +14,29 @@ var router = new VueRouter(router_config.config);
 router.beforeEach(router_config.beforeEach);
 router.afterEach(router_config.afterEach);
 
-//使用vuex
-import Vuex from 'vuex'
-Vue.use(Vuex);
-import store_config from "./vuex/main_vuex.js";
-var store = new Vuex.Store(store_config.config);
+
+
+
+//引入el-ui
+import { Message } from 'element-ui';
+import { Loading } from 'element-ui';
+import { MessageBox } from 'element-ui';
+import 'element-ui/lib/theme-default/index.css';
+Vue.prototype.$msg = Message;
+Vue.prototype.$load = Loading.service;
+Vue.prototype.$confirm = MessageBox.confirm;
+
 
 //引入vue-resource
-import VueResource from "vue-resource";
-Vue.use(VueResource);
-//vue-resource拦截器，用来设置ajax 是否而已携带cookie，这cookie携带的是服务器端的，而不是浏览器的
-Vue.http.interceptors.push((request, next) => {
-	request.credentials = true;
-	next();
-});
+import v from "./vue-resource/main_resource.js";
+Vue.prototype.http = v.$http;
+
+
 
 import "wangeditor";
 wangEditor.config.printLog = false;
+
+
 
 
 //引入初始化css
@@ -45,5 +56,6 @@ new Vue({
 	el: '#app',
 	template: '<App/>',
 	components: { App },
-	router,store
+	store:store.store,
+	router,
 });

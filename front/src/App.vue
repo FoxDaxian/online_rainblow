@@ -18,9 +18,7 @@
 </style>
 <template>
 	<div id="app">
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
+		<router-view></router-view>
 		<div class="box">
 			<keep-alive>
 				<router-view name="title_side"></router-view>
@@ -34,7 +32,7 @@
 	export default {
 		name: 'app',
 		components: {
-			
+
 		},
 		data(){
 			return{
@@ -51,28 +49,16 @@
 			
 		},
 		mounted(){
-			
-			// 记住登陆状态
-			this.$http({
-				url:"http://rbblog.space/blog/home/index/autoLogin",
-				method:"get",
-			}).then( (data) => {
-				if( data.data.res === 0 ){
-					this.$store.commit("changeUserInfo",undefined);
-				}else {
-					this.$store.commit("changeUserInfo",data.data.res[0]);
-				}
-			},(data) => {
-				console.error("自动登录失败,来自app.vue");
-			});
-
-
 			// 获取全部的文章数据到vuex
 			this.$http({
 				url:"http://rbblog.space/blog/home/index/allArtical",
 				method:"get",
 			}).then( (data) => {
-				this.$store.commit("getArticalData",data.data.reverse());
+				if( {}.toString.call(data.data) === "[object Array]" ){
+					this.$store.commit("getArticalData",data.data.reverse());
+				}else{
+					console.error("获取失败,来自app.vue");
+				}
 			},(data) => {
 				console.error("获取文章内容失败，来自main_side.vue");
 			});
