@@ -188,7 +188,7 @@
 			},
 			ajax(key,value,to_change){
 				this.$http({
-					url:this.url_root + "blog/home/index/set_user_info",
+					url:"http://rbblog.space/blog/home/index/set_user_info",
 					method:"post",
 					body:{
 						id:this.user_data.id,
@@ -203,11 +203,7 @@
 							name:value
 						});
 					}else if( data.data.res === 2 ){
-						this.$msg({
-							showClose: true,
-							message: '老铁，你改改在保存',
-							type: 'error'
-						});
+						alert('系统未检测到修改');
 						this[to_change] || (this[to_change] = false);
 					}else{
 						this[to_change] = "失败";

@@ -164,7 +164,7 @@
 				let ev = e || window.event;
 				ev.stopPropagation();
 				this.$http({
-					url:this.url_root + "blog/home/index/toUp",
+					url:"http://rbblog.space/blog/home/index/toUp",
 					method:"post",
 					body:{
 						id:id
@@ -176,12 +176,7 @@
 							(el.id === id) && el.up++;
 						});
 					}else{
-						this.$msg({
-							showClose: true,
-							message: '数据库爆炸',
-							type: 'error'
-						});
-
+						alert('操作失败');
 					}
 				},(data) => {
 					console.error("请求失败，来自main_side.vue");
@@ -194,7 +189,7 @@
 				ev.stopPropagation();
 
 				this.$http({
-					url:this.url_root + "blog/home/index/toDown",
+					url:"http://rbblog.space/blog/home/index/toDown",
 					method:"post",
 					body:{
 						id:id
@@ -206,11 +201,7 @@
 							(el.id === id) && el.down++;
 						});
 					}else{
-						this.$msg({
-							showClose: true,
-							message: '数据库爆炸',
-							type: 'error'
-						});
+						alert('操作失败');
 					}
 				},(data) => {
 					console.error("请求失败，来自main_side.vue");
@@ -225,23 +216,15 @@
 				//判断评论框内容是否为空
 				let formatText = this.artical_md.$txt.formatText();
 				if( this.$store.state.userInfo === null ){
-					this.$msg({
-						showClose: true,
-						message: '不登录我很难做啊，老铁',
-						type: 'error'
-					});
+					alert('请登录');
 				}
 				else{
 					if( formatText.trim().length === 0 && !/img/.test(html) ){
-						this.$msg({
-							showClose: true,
-							message: '登陆了也不能这样啊，老铁',
-							type: 'error'
-						});
+						alert('不能发送空');
 					}else{
 						//带有html的文本 -->存储到数据库的
 						this.$http({
-							url:this.url_root + "blog/home/index/send_comment",
+							url:"http://rbblog.space/blog/home/index/send_comment",
 							method:"post",
 							body:{
 								//发送到数据库的评论
@@ -258,11 +241,7 @@
 								this.all_artical.forEach(function(el,i) {
 									(el.id === id) && el.comment_count++;
 								});
-								this.$msg({
-									showClose: true,
-									message: '那你很棒哟，老铁',
-									type: 'success'
-								});
+								alert('评论成功');
 								this.comment_data.unshift(data.data.data[0])
 								this.artical_md.$txt.html("<p><br></p>");
 							}
@@ -290,7 +269,7 @@
 			//请求评论方法
 			let getComment_fn = () => {
 				this.$http({
-					url:this.url_root + "blog/home/index/getComment",
+					url:"http://rbblog.space/blog/home/index/getComment",
 					method:"post",
 					body:{
 						artical_id:this.detail_data.id
@@ -331,7 +310,7 @@
 			}else{
 				// 获取详细数据的
 				this.$http({
-					url:this.url_root + "blog/home/index/allArtical",
+					url:"http://rbblog.space/blog/home/index/allArtical",
 					method:"get",
 				}).then( (data) => {
 					data.data.reverse();

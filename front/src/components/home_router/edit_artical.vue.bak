@@ -75,6 +75,9 @@
 </template>
 
 <script>
+	//引入富文本编辑器
+	import "wangeditor";
+	wangEditor.config.printLog = false;
 	export default {
 
 		name: 'edit_artical',
@@ -92,7 +95,7 @@
 				tit = this.artical_title,
 				cont = this.markdown.$txt.html();
 				this.$http({
-					url:this.url_root + "blog/home/index/save_modify",
+					url:"http://rbblog.space/blog/home/index/save_modify",
 					method:"post",
 					body:{
 						artical_id:art_id,
@@ -107,25 +110,13 @@
 						content:cont
 					});
 					if( data.data.res === 1 ){
-						this.$msg({
-							showClose: true,
-							message: '我帮你改完了',
-							type: 'error'
-						});
+						alert('修改成功');
 					}
 					if( data.data.res === 2 ){
-						this.$msg({
-							showClose: true,
-							message: '老铁，你都没改',
-							type: 'error'
-						});
+						alert('系统未检测到修改');
 					}
 					if( data.data.res === 0 ){
-						this.$msg({
-							showClose: true,
-							message: '数据库爆炸',
-							type: 'error'
-						});
+						console.error("服务器错误");
 					}
 				},(data) => {
 					console.error("请求失败，来自edit_artical.vue");

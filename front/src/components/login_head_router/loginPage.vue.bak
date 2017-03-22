@@ -286,6 +286,7 @@
 		name: 'loginPage',
 		data () {
 			return {
+				load:null,
 				onoff:true,
 				changebg_arr:["ref3","ref4","ref5","ref6","ref7"],
 				ref3_onoff:false,
@@ -301,19 +302,12 @@
 			};
 		},
 		methods:{
-			enter_todo(e){
-				let ev = e || window.event;
-				if( ev.keyCode === 13 ){
-					this.onoff && this.loginFn();
-					this.onoff ||this.registerFn();
-				}
-			},
 			change_onoff(){
 				this.onoff = !this.onoff;
 			},
 			loginFn(){
 				this.$http({
-					url:this.url_root + "blog/home/index/login",
+					url:"http://rbblog.space/blog/home/index/login",
 					method:"post",
 					body:{
 						acc:this.login_acc,
@@ -323,12 +317,7 @@
 					emulateJSON: true
 				}).then( (data) => {
 					if( data.data.res === 1 ){
-						if( this.back_path !== undefined ){
-							//记录的用户在未登录状态下访问的页面
-							this.$router.push(this.back_path);
-						}else{
-							this.$router.push("/");
-						}
+						location.href = "http://rbblog.space/";
 					}
 					if( data.data.res === 4 ){
 						this.$msg({
@@ -355,14 +344,14 @@
 					this.$msg({
 						type:"error",
 						showClose: true,
-						message: '数据库爆炸'
+						message: '怪站长'
 					});
 				});
 			},
 			registerFn(){
 				var post = () => {
 					this.$http({
-						url:this.url_root + "blog/home/index/register",
+						url:"http://rbblog.space/blog/home/index/register",
 						method:"post",
 						body:{
 							username:this.regis_un,
@@ -401,11 +390,12 @@
 								message: '邮箱被别人抢先注册了，好气啊'
 							});
 						}
+						this.load.close();
 					},(data) => {
 						this.$msg({
 							type:"error",
 							showClose: true,
-							message: '数据库爆炸'
+							message: '站长的错，注册失败'
 						});
 					});
 				}
@@ -419,13 +409,19 @@
 					});
 				}
 
+				let with_load = () => {
+					this.load = this.$load({
+						text:"biubiubiu..."
+					});
+					post();
+				}
 
 				(this.regis_un_class === "success") &&
 				(this.regis_acc_class === "success") &&
 				(this.regis_pw_class === "success") &&
 				(this.regis_repw_class === "success") &&
 				(this.regis_email_class === "success") &&
-				post();
+				with_load();
 				(this.regis_un_class === "success") &&
 				(this.regis_acc_class === "success") &&
 				(this.regis_pw_class === "success") &&
@@ -434,22 +430,8 @@
 				showerror();
 			},
 			backHome(){
-				//vue-reouter的编程式路由，还是蛮好用的，其实就是利用的JS的history，稳稳当当弄完了自己的东西，开始干
+				//vue-reouter的编程式路由，还是蛮好用的，七十就是利用的JS的history，稳稳当当弄完了自己的东西，开始干
 				this.$router.push("/");
-			},
-			rm_event(el, event, fn) {
-				if ( window.removeEventListener ) {   
-					el.removeEventListener(event, fn);   
-				}else{   
-					el.detachEvent("on" + event, fn);   
-				}   
-			},
-			add_event(el, event, fn){
-				if ( window.attachEvent ){
-					el.attachEvent("on" + event, fn);
-				}else{
-					el.addEventListener(event, fn);
-				}
 			}
 		},
 		watch:{
@@ -458,9 +440,6 @@
 			}
 		},
 		computed:{
-			back_path(){
-				return this.$router.currentRoute.query.back;
-			},
 			regis_un_class(){
 				if( this.ref3_onoff ){
 					if( this.regis_un.replace(/(^\s*)|(\s*$)/g, "").length >= 2 && this.regis_un.replace(/(^\s*)|(\s*$)/g, "").length <= 10 ){
@@ -505,14 +484,9 @@
 						return "danger";
 					}
 				}
-			},
-		},
-		beforeDestroy(){
-			this.rm_event(window,"keyup",this.enter_todo);
+			}
 		},
 		mounted(){
-			this.add_event(window,"keyup",this.enter_todo);
-
 			this.$refs.ref1.focus();
 			for( let item in this.$refs ){
 				this.changebg_arr.forEach((el,i) => {
@@ -536,7 +510,7 @@
 					}
 				}
 			}
-
+			
 		},
 	};
 </script>

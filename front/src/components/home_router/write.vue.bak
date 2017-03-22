@@ -26,7 +26,7 @@
 			box-sizing: border-box;
 			-moz-box-sizing: border-box;
 			.title{
-				height: 7vh;
+				height: 5vh;
 				font-size: 40px;
 				border:none;
 				outline: none;
@@ -37,7 +37,7 @@
 			}
 			#write_markdown{
 				height: 64vh;
-				min-height: 200px;
+				min-height: 390px;
 				padding: 10px;
 				font-size: 30px;
 			}
@@ -103,11 +103,7 @@
 		},
 		computed:{
 			user_data(){
-				if( this.$store.state.userInfo ){
-					return this.$store.state.userInfo;
-				}else{
-					return "请登录";
-				}
+				return this.$store.state.userInfo;
 			},
 			doc_title(){
 				return document.title;
@@ -132,7 +128,7 @@
 				}else{
 					if( this.artical_title.trim().length !== 0 ){
 						this.$http({
-							url:this.url_root + "blog/home/index/save_draft",
+							url:"http://rbblog.space/blog/home/index/save_draft",
 							method:"post",
 							body:{
 								id:  this.user_data.id,
@@ -192,7 +188,7 @@
 						}).then(() => {
 							let temp_time = new Date().getTime();
 							this.$http({
-								url:this.url_root + "blog/home/index/send_artical",
+								url:"http://rbblog.space/blog/home/index/send_artical",
 								method:"post",
 								body:{
 									id:this.user_data.id,
@@ -248,11 +244,7 @@
 							});    
 						});
 					}else{
-						this.$msg({
-							showClose: true,
-							message: '标题！标题！标题！',
-							type: 'error'
-						});
+						alert('标题为空');
 					}
 				}
 			},
@@ -273,10 +265,10 @@
 			this.markdown.create();
 			this.$refs.input.focus();
 
-			
+
 			// 啥都不用了，第一次进来，追加内容就好，之后又keep-alive，所以不会丢失草稿内容
 			this.$http({
-				url:this.url_root + "blog/home/index/get_draft",
+				url:"http://rbblog.space/blog/home/index/get_draft",
 				method:"post",
 				body:{
 					id:this.user_data.id,
@@ -289,11 +281,7 @@
 						this.markdown.$txt.html(this.escape2Html(data.data.res_data.content));
 					}
 				}else{
-					this.$msg({
-						showClose: true,
-						message: '数据库爆炸',
-						type: 'error'
-					});
+					alert('草稿获取错误');
 				}
 			},(data) => {
 				console.error("请求失败，来自write.vue");
