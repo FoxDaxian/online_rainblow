@@ -286,7 +286,10 @@
 		name: 'loginPage',
 		data () {
 			return {
+<<<<<<< HEAD
 				load:null,
+=======
+>>>>>>> origin/master
 				onoff:true,
 				changebg_arr:["ref3","ref4","ref5","ref6","ref7"],
 				ref3_onoff:false,
@@ -320,6 +323,7 @@
 						location.href = "http://rbblog.space/";
 					}
 					if( data.data.res === 4 ){
+<<<<<<< HEAD
 						this.$msg({
 							type:"error",
 							showClose: true,
@@ -346,6 +350,18 @@
 						showClose: true,
 						message: '怪站长'
 					});
+=======
+						alert('账号错误');
+					}
+					if( data.data.res === 2 ){
+						alert('密码错误');
+					}
+					if( data.data.res === 3 ){
+						alert('该账号未激活');
+					}
+				},(data) => {
+					alert('登录失败');
+>>>>>>> origin/master
 				});
 			},
 			registerFn(){
@@ -362,6 +378,7 @@
 						emulateJSON: true
 					}).then( (data) => {
 						if(  data.data.res === 1  ){
+<<<<<<< HEAD
 							//发送成功
 							this.$msg({
 								type:"success",
@@ -397,11 +414,28 @@
 							showClose: true,
 							message: '站长的错，注册失败'
 						});
+=======
+							alert('邮件发送成功，请验证您的账户');
+						}
+						if( data.data.res === 3 ){
+							alert('账号已存在');
+						}
+						if( data.data.res === 4 ){
+							alert('用户名已存在');
+						}
+						if( data.data.res === 5 ){
+							alert('您填写的邮箱已经注册过了');
+						}
+					},(data) => {
+						console.log(data);
+						alert('注册失败');
+>>>>>>> origin/master
 					});
 				}
 
 				//这里是前台验证
 				let showerror = () => {
+<<<<<<< HEAD
 					this.$msg({
 						type:"error",
 						showClose: true,
@@ -416,12 +450,20 @@
 					post();
 				}
 
+=======
+					alert('信息填写有误，请确认');
+				}
+>>>>>>> origin/master
 				(this.regis_un_class === "success") &&
 				(this.regis_acc_class === "success") &&
 				(this.regis_pw_class === "success") &&
 				(this.regis_repw_class === "success") &&
 				(this.regis_email_class === "success") &&
+<<<<<<< HEAD
 				with_load();
+=======
+				post();
+>>>>>>> origin/master
 				(this.regis_un_class === "success") &&
 				(this.regis_acc_class === "success") &&
 				(this.regis_pw_class === "success") &&
